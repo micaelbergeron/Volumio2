@@ -51,6 +51,9 @@ function CoreCommandRouter(server) {
     // Start the music library
     this.musicLibrary = new (require('./musiclibrary.js'))(this);
 
+    // setting a default value for variable
+    this.storeIpAddress('127.0.0.1');
+
     // Start plugins
     this.pluginManager = new (require(__dirname + '/pluginmanager.js'))(this, server);
     this.pluginManager.checkIndex();
@@ -1520,3 +1523,13 @@ CoreCommandRouter.prototype.checkAndPerformSystemUpdates = function () {
 
     }
 }
+
+
+CoreCommandRouter.prototype.storeIpAddress = function (address) {
+    this.pushDebugConsoleMessage('CoreCommandRouter::storeIpAddress to value '+address);
+
+    this.sharedVars.set('ipAddress',address);
+
+    //returning a solved promise for convenience. This way it can be used in a promise chain.
+    return libQ.resolve();
+};
